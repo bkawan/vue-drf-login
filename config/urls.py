@@ -21,7 +21,7 @@ from apps.core.views import LandingPageTemplateView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^', LandingPageTemplateView.as_view()),
+    url(r'^$', LandingPageTemplateView.as_view()),
     url(r'^api/v1/', include([
         url('^', include('apps.users.api.v1.urls'), name='users')
     ])),
