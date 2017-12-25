@@ -79,8 +79,6 @@
                 this.errors.passwordAgain = errors[v][0]
               }
               this.errors[v] = errors[v][0]
-
-
             }
           }
 
