@@ -10,6 +10,13 @@
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
+        <div class="row">
+          <div class="col-3">
+          </div>
+          <div class="col-9">
+            <p class="small text-danger" v-if="errors.non_field_errors">{{ errors.non_field_errors}}</p>
+          </div>
+        </div>
         <button @click='login' class="btn btn-outline-success">Signup</button>
       </form>
     </div>
@@ -34,6 +41,9 @@
         errors: {
           username: '',
           password: '',
+          non_field_errors: ''
+
+
         }
       }
 
@@ -46,11 +56,15 @@
         })
           .then(response => {
             console.log(response)
+            this.$router.push('/dashboard')
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors);
           for (var v in errors) {
             if (v) {
+              if (v == 'non_field_errors') {
+                this.non_field_errors = errors[v][0]
+              }
               this.errors[v] = errors[v][0]
             }
           }
