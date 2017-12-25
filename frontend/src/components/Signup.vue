@@ -7,6 +7,7 @@
           <label for="" class="col-3 col-form-label">{{unCamelCase(key)}}</label>
           <div class="col-9">
             <input class="form-control" type="text" v-model="signupForm[key]">
+            <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
         <button @click='signup' class="btn btn-outline-success">Signup</button>
@@ -33,17 +34,58 @@
           email: '',
           password: '',
           passwordAgain: '',
+          gender: '',
+          salutation: '',
+        },
+        errors: {
+          firstName: '',
+          lastName: '',
+          username: '',
+          email: '',
+          password: '',
+          passwordAgain: '',
+          gender: '',
+          salutation: '',
         }
       }
 
     },
     methods: {
       signup(event) {
-        console.log('here')
-        axios.post(`http://localhost:8000/api/v1/users/`,this.signupForm)
+        axios.post(`http://localhost:8001/api/v1/users/`, {
+          'first_name': this.signupForm.firstName,
+          'last_name': this.signupForm.lastName,
+          'salutation': this.signupForm.salutation,
+          'gender': this.signupForm.gender,
+          'username': this.signupForm.username,
+          'email': this.signupForm.email,
+          'password': this.signupForm.password,
+          'password_again': this.signupForm.passwordAgain,
+        })
           .then(response => {
             console.log(response)
-          })
+          }).catch(error => {
+          const errors = error.response.data
+          for (var v in errors) {
+            console.log(errors)
+            if (v) {
+              if (v == 'first_name') {
+                this.errors.firstName = errors[v][0]
+              }
+              if (v == 'last_name') {
+                this.errors.lastName = errors[v][0]
+              }
+              if (v == 'password_again') {
+                this.errors.passwordAgain = errors[v][0]
+              }
+              this.errors[v] = errors[v][0]
+
+
+            }
+          }
+
+
+        });
 
         event.preventDefault()
 
