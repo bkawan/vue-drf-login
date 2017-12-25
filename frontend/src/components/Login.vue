@@ -32,7 +32,6 @@
   export default {
     name: 'login',
     data() {
-
       return {
         signupForm: {
           username: '',
