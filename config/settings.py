@@ -43,7 +43,9 @@ LOCAL_APPS = [
 THIRD_PARTY = [
 
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework.authtoken'
+
 ]
 INSTALLED_APPS = INSTALLED_APPS + LOCAL_APPS + THIRD_PARTY
 
