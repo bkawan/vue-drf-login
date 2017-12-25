@@ -1,6 +1,5 @@
 <template>
   <div id="app" class="container py-3">
-    <!--<signup></signup>-->
     <router-view></router-view>
   </div>
 </template>
