@@ -6,7 +6,7 @@
         <div class="form-group row" v-for="(val,key) in signupForm">
           <label for="" class="col-3 col-form-label">{{unCamelCase(key)}}</label>
           <div class="col-9">
-            <input class="form-control" type="text" v-model="signupForm[key]">
+            <input class="form-control" type="text" v-model="signupForm[key]" @keyup="clearErrors(key)">
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
@@ -17,7 +17,7 @@
             <p class="small text-danger" v-if="errors.non_field_errors">{{ errors.non_field_errors}}</p>
           </div>
         </div>
-        <button @click='login' class="btn btn-outline-success">Signup</button>
+        <button @click='login' class="btn btn-outline-success">Login</button>
       </form>
     </div>
   </div>
@@ -70,6 +70,11 @@
           }
         });
         event.preventDefault()
+      },
+      clearErrors(field) {
+        this.errors[field] = '';
+        this.errors.non_field_errors = '';
+
       },
       unCamelCase(value) {
         return value.replace(/([A-Z])/g, ' $1')
