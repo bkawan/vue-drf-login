@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include
+from rest_framework.authtoken.views import obtain_auth_token
 
 from apps.core.views import LandingPageTemplateView
 
@@ -23,6 +24,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', LandingPageTemplateView.as_view()),
     url(r'^api/v1/', include([
-        url('^', include('apps.users.api.v1.urls'), name='users')
+        url('^', include('apps.users.api.v1.urls'), name='users'),
+        url(r'^auth/login/', obtain_auth_token),
+
     ])),
 ]

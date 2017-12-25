@@ -28,11 +28,11 @@
 
       return {
         signupForm: {
-          email: '',
+          username: '',
           password: '',
         },
         errors: {
-          email: '',
+          username: '',
           password: '',
         }
       }
@@ -40,14 +40,15 @@
     },
     methods: {
       login(event) {
-        axios.post(`http://localhost:8001/api/v1/login/`, {
+        axios.post(`http://localhost:8000/api/v1/auth/login/`, {
           'username': this.signupForm.username,
           'password': this.signupForm.password,
         })
           .then(response => {
             console.log(response)
           }).catch(error => {
-          const errors = error.response.data
+          const errors = error.response.data;
+          console.log(errors);
           for (var v in errors) {
             if (v) {
               this.errors[v] = errors[v][0]
