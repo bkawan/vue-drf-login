@@ -1,7 +1,7 @@
 <template>
-  <div id="signup">
+  <div id="login">
     <div class="container">
-      <h1 class="py-3">Signup</h1>
+      <h1 class="py-3">Login</h1>
       <form action="" class="">
         <div class="form-group row" v-for="(val,key) in signupForm">
           <label for="" class="col-3 col-form-label">{{unCamelCase(key)}}</label>
@@ -10,85 +10,51 @@
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
-        <button @click='signup' class="btn btn-outline-success">Signup</button>
+        <button @click='login' class="btn btn-outline-success">Signup</button>
       </form>
     </div>
   </div>
 
 </template>
 
+
 <script>
   import axios from 'axios'
   import swal from 'sweetalert'
 
   export default {
-    name: 'signup',
+    name: 'login',
     data() {
 
       return {
         signupForm: {
-          firstName: '',
-          lastName: '',
-          username: '',
           email: '',
           password: '',
-          passwordAgain: '',
-          gender: '',
-          salutation: '',
         },
         errors: {
-          firstName: '',
-          lastName: '',
-          username: '',
           email: '',
           password: '',
-          passwordAgain: '',
-          gender: '',
-          salutation: '',
         }
       }
 
     },
     methods: {
-      signup(event) {
-        axios.post(`http://localhost:8001/api/v1/users/`, {
-          'first_name': this.signupForm.firstName,
-          'last_name': this.signupForm.lastName,
-          'salutation': this.signupForm.salutation,
-          'gender': this.signupForm.gender,
+      login(event) {
+        axios.post(`http://localhost:8001/api/v1/login/`, {
           'username': this.signupForm.username,
-          'email': this.signupForm.email,
           'password': this.signupForm.password,
-          'password_again': this.signupForm.passwordAgain,
         })
           .then(response => {
             console.log(response)
           }).catch(error => {
           const errors = error.response.data
           for (var v in errors) {
-            console.log(errors)
             if (v) {
-              if (v == 'first_name') {
-                this.errors.firstName = errors[v][0]
-              }
-              if (v == 'last_name') {
-                this.errors.lastName = errors[v][0]
-              }
-              if (v == 'password_again') {
-                this.errors.passwordAgain = errors[v][0]
-              }
               this.errors[v] = errors[v][0]
-
-
             }
           }
-
-
         });
-
         event.preventDefault()
-
-
       },
       unCamelCase(value) {
         return value.replace(/([A-Z])/g, ' $1')

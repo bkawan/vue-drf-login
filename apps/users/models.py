@@ -27,7 +27,7 @@ class User(AbstractUser):
     salutation = models.CharField(choices=SALUTATION, max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    mobile = models.CharField(max_length=50, null=True)
+    mobile = models.CharField(max_length=50, null=True, blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=15)
     status = models.CharField(choices=USER_STATUS_CHOICES, max_length=30, default='Registered')
 
