@@ -69,8 +69,9 @@
           'password': this.loginForm.password.value,
         })
           .then(response => {
-            console.log(response)
-            this.$router.push('/dashboard')
+            console.log(response);
+            localStorage.setItem('token', response.data.token);
+            this.$router.push('/dashboard/profile')
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors);
