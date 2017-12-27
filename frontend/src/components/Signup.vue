@@ -74,7 +74,6 @@
   export default {
     name: 'signup',
     data() {
-
       return {
         signupForm: {
           salutation: {
@@ -143,9 +142,9 @@
           'password_again': this.signupForm.passwordAgain.value,
         })
           .then(response => {
-            console.log(response)
+            console.log(response);
+           this.$router.push('/login')
           }).catch(error => {
-
           const errors = error.response.data
           for (var v in errors) {
             if (v) {
