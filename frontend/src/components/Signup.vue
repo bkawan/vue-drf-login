@@ -2,8 +2,8 @@
   <div id="signup">
     <div class="container">
       <h1 class="py-3 text-center">Registration Form</h1>
-      <form action="" class="">
-        <div class="form-group row" v-for="(val,key) in signupForm">
+      <form action="" class="" enctype="multipart/form-data">
+        <div class="form-group row" v-for="(val, key) in signupForm">
           <label for="" class="col-3 col-form-label text-right">{{unCamelCase(key)}} : </label>
           <div class="col-6" v-if="signupForm[key].type === 'radio'">
             <input class=""
@@ -52,6 +52,8 @@
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
+            <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
+            <img :src="avatar" alt="">
             <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
           </div>
         </div>
@@ -115,6 +117,7 @@
             value: '',
             type: 'password'
           },
+          avatar:'sdf'
         },
         errors: {
           firstName: '',
@@ -140,10 +143,11 @@
           'email': this.signupForm.email.value,
           'password': this.signupForm.password.value,
           'password_again': this.signupForm.passwordAgain.value,
+          'avatar': this.avatar,
         })
           .then(response => {
             console.log(response);
-           this.$router.push('/login')
+            this.$router.push('/login')
           }).catch(error => {
           const errors = error.response.data
           for (var v in errors) {
@@ -180,6 +184,26 @@
         this.errors.non_field_errors = '';
 
       },
+      onFileChange(event) {
+        let files = event.target.files;
+        if (!files.length)
+          return;
+
+        this.createImage(files[0])
+      },
+      createImage(file) {
+        let image = new Image();
+        let reader = new FileReader();
+
+        reader.onload = (e) => {
+          let vm = this;
+          vm.avatar = e.target.result;
+          console.log(e.target.result)
+        },
+          reader.readAsDataURL(file);
+
+
+      }
 
     }
 
