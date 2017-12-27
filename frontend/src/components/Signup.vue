@@ -1,16 +1,43 @@
 <template>
   <div id="signup">
     <div class="container">
-      <h1 class="py-3">Signup</h1>
+      <h1 class="py-3 text-center">Registration Form</h1>
       <form action="" class="">
         <div class="form-group row" v-for="(val,key) in signupForm">
-          <label for="" class="col-3 col-form-label">{{unCamelCase(key)}}</label>
-          <div class="col-9">
-            <input class="form-control" type="text" v-model="signupForm[key]">
+          <label for="" class="col-3 col-form-label text-right">{{unCamelCase(key)}} : </label>
+
+          <div class="col-6" v-if="signupForm[key].type === 'radio'">
+            <input class="" type="radio" id="male" value="Male" v-model="signupForm[key].value">
+            <label for="male">Male</label>
+            <br>
+            <input type="radio" id="female" value="Female" v-model="signupForm[key].value">
+            <label for="female">Female</label>
+            <br>
+            <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
+          </div>
+          <div class="col-6" v-else-if="signupForm[key].type=='select'">
+            <select name="" id="" v-model="signupForm[key].value">
+              <option v-for="option in signupForm[key].options" :value="option">{{option}}</option>
+            </select>
+            <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
+          </div>
+          <div class="col-6" v-else>
+            <input class="form-control" :type="signupForm[key].type" v-model="signupForm[key].value">
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
-        <button @click='signup' class="btn btn-outline-success">Signup</button>
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
+          </div>
+        </div>
+        <div class="row pt-3">
+          <div class="col-3"></div>
+          <div class="col-6">
+            <p class="small text-right">Already have account ? <a href="login">Login</a></p>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -27,14 +54,45 @@
 
       return {
         signupForm: {
-          firstName: '',
-          lastName: '',
-          username: '',
-          email: '',
-          password: '',
-          passwordAgain: '',
-          gender: '',
-          salutation: '',
+          salutation: {
+            value: '',
+            type: 'select',
+            options: [
+              "Mr",
+              "Miss",
+            ]
+          },
+          firstName: {
+            value: '',
+            type: 'text'
+          },
+          lastName: {
+
+            value: '',
+            type: 'text'
+          },
+          gender: {
+            value: '',
+            type: 'radio',
+            options: ['Male', 'Female', 'Others']
+          },
+          username: {
+            value: '',
+            type: 'text'
+          },
+          email: {
+            value: '',
+            type: 'email'
+          },
+          password: {
+
+            value: '',
+            type: 'password'
+          },
+          passwordAgain: {
+            value: '',
+            type: 'password'
+          },
         },
         errors: {
           firstName: '',
@@ -51,22 +109,22 @@
     },
     methods: {
       signup(event) {
-        axios.post(`http://localhost:8001/api/v1/users/`, {
-          'first_name': this.signupForm.firstName,
-          'last_name': this.signupForm.lastName,
-          'salutation': this.signupForm.salutation,
-          'gender': this.signupForm.gender,
-          'username': this.signupForm.username,
-          'email': this.signupForm.email,
-          'password': this.signupForm.password,
-          'password_again': this.signupForm.passwordAgain,
+        axios.post(`http://localhost:8000/api/v1/users/`, {
+          'first_name': this.signupForm.firstName.value,
+          'last_name': this.signupForm.lastName.value,
+          'salutation': this.signupForm.salutation.value,
+          'gender': this.signupForm.gender.value,
+          'username': this.signupForm.username.value,
+          'email': this.signupForm.email.value,
+          'password': this.signupForm.password.value,
+          'password_again': this.signupForm.passwordAgain.value,
         })
           .then(response => {
             console.log(response)
           }).catch(error => {
+
           const errors = error.response.data
           for (var v in errors) {
-            console.log(errors)
             if (v) {
               if (v == 'first_name') {
                 this.errors.firstName = errors[v][0]
