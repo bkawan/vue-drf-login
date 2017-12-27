@@ -5,24 +5,47 @@
       <form action="" class="">
         <div class="form-group row" v-for="(val,key) in signupForm">
           <label for="" class="col-3 col-form-label text-right">{{unCamelCase(key)}} : </label>
-
           <div class="col-6" v-if="signupForm[key].type === 'radio'">
-            <input class="" type="radio" id="male" value="Male" v-model="signupForm[key].value">
+            <input class=""
+                   type="radio"
+                   id="male"
+                   value="Male"
+                   v-model="signupForm[key].value"
+                   @click="clearErrors(key)"
+            >
             <label for="male">Male</label>
             <br>
-            <input type="radio" id="female" value="Female" v-model="signupForm[key].value">
+            <input type="radio"
+                   id="female"
+                   value="Female"
+                   v-model="signupForm[key].value"
+                   @click="clearErrors(key)"
+            >
             <label for="female">Female</label>
             <br>
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
           <div class="col-6" v-else-if="signupForm[key].type=='select'">
-            <select name="" id="" v-model="signupForm[key].value">
-              <option v-for="option in signupForm[key].options" :value="option">{{option}}</option>
+            <select name="" id=""
+                    v-model="signupForm[key].value"
+                    @click="clearErrors(key)"
+            >
+              <option v-for="option in signupForm[key].options"
+                      :value="option"
+
+              >
+                {{option}}
+              </option>
             </select>
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
           <div class="col-6" v-else>
-            <input class="form-control" :type="signupForm[key].type" v-model="signupForm[key].value">
+            <input class="form-control"
+                   :type="signupForm[key].type"
+                   v-model="signupForm[key].value"
+                   @keyup="clearErrors(key)"
+
+            >
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
         </div>
@@ -152,7 +175,13 @@
           .replace(/^./, function (str) {
             return str.toUpperCase();
           })
-      }
+      },
+      clearErrors(field) {
+        this.errors[field] = '';
+        this.errors.non_field_errors = '';
+
+      },
+
     }
 
   }
