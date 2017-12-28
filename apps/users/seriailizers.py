@@ -1,7 +1,8 @@
+from django.db import IntegrityError
 from django.utils.translation import ugettext as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from rest_framework.fields import CharField
+from rest_framework.fields import CharField, EmailField
 from rest_framework.serializers import ModelSerializer, Serializer
 
 from .models import User
@@ -75,3 +76,43 @@ class PasswordSerializer(Serializer):
         if data['password'] != data['password_again']:
             raise ValidationError("password and Password again Does not match")
         return data
+
+
+class SignupSerializer(Serializer):
+    username = CharField(max_length=255)
+    email = EmailField(max_length=255)
+    password = CharField(label=_("Password"), style={'input_type':'password'}, min_length=8, max_length=255)
+    password_again = CharField(label=_("Password"), style={'input_type':'password'}, min_length=8, max_length=255)
+
+    class Meta:
+        fields = ['username', 'email', 'password', 'password_again']
+        extra_kwargs = {
+            'password':{'write_only':True},
+            'password_again':{'write_only':True}
+        }
+
+    def to_representation(self, instance):
+
+        instance = super().to_representation(instance)
+        import ipdb
+        ipdb.set_trace()
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        password_again = validated_data.pop('password_again')
+
+        try:
+            user = User.objects.create(**validated_data)
+            user.set_password('password')
+            user.save()
+            return user
+        except IntegrityError:
+            raise ValidationError("A user with {} and {} is already registered".format(validated_data.get('username'),
+                                                                                       validated_data.get('email')))
+
+    def validate(self, attrs):
+        password = attrs.get('password')
+        password_again = attrs.get('password_again')
+        if password != password_again:
+            raise ValidationError('password and password_again does not match')
+        return attrs

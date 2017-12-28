@@ -20,6 +20,7 @@ from django.urls import include
 from rest_framework.authtoken.views import obtain_auth_token
 
 from apps.core.views import LandingPageTemplateView
+from apps.users.api.v1.views import SignupView
 from config import settings
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
                   url(r'^api/v1/', include([
                       url('^', include('apps.users.api.v1.urls'), name='users'),
                       url(r'^auth/login/', obtain_auth_token),
+                      url(r'^auth/signup/', SignupView.as_view()),
 
                   ])),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
