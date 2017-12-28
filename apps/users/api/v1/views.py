@@ -10,14 +10,7 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
     parser_classes = (MultiPartParser, FormParser, JSONParser)
 
-    def get_queryset(self, **kwargs):
-        qs = self.queryset
-        if self.kwargs.get('pk') == 'me':
-            return qs.filter(id=self.request.user.id)
-        return qs
-
     def get_object(self):
-        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
-        if self.kwargs[lookup_url_kwarg] == 'me':
-            return self.get_queryset().get()
+        if self.kwargs.get(self.lookup_field) == 'me':
+            self.kwargs[self.lookup_field] = self.request.user.id
         return super().get_object()
