@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+
 from apps.core.utils import get_image_path
 
 
@@ -26,6 +27,7 @@ class User(AbstractUser):
         ('Other', 'Other'),
     )
     salutation = models.CharField(choices=SALUTATION, max_length=255)
+    email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     mobile = models.CharField(max_length=50, null=True, blank=True)

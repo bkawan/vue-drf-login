@@ -1,4 +1,3 @@
-from rest_framework import permissions
 from rest_framework.generics import CreateAPIView
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.viewsets import ModelViewSet
@@ -21,15 +20,4 @@ class UserViewSet(ModelViewSet):
 class SignupView(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = SignupSerializer
-    permission_classes = [permissions.AllowAny]
-
-    # def create(self, request, *args, **kwargs):
-    #     import ipdb
-    #     ipdb.set_trace()
-    #     data = super().create(request, *args, **kwargs)
-    #
-    # def post(self, request, *args, **kwargs):
-    #     user = self.create(request, *args, **kwargs)
-    #     import ipdb
-    #     ipdb.set_trace()
-    #     return user
+    permission_classes = []
