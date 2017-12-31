@@ -10,6 +10,7 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     parser_classes = (MultiPartParser, FormParser, JSONParser)
+    # permission_classes = []
 
     def get_object(self):
         if self.kwargs.get(self.lookup_field) == 'me':
