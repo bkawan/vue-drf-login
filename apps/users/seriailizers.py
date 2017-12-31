@@ -60,17 +60,17 @@ class Base64ImageField(serializers.ImageField):
 
 class UserSerializer(ModelSerializer):
     avatar = Base64ImageField(
-        max_length=None, use_url=True,
+            max_length=None, use_url=True, allow_null=True,allow_empty_file=True
     )
 
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ['id', 'username', 'email', 'salutation', 'first_name', 'last_name', 'gender', 'mobile', 'avatar']
 
 
 class PasswordSerializer(Serializer):
-    password = CharField(label=_("Password"), style={'input_type':'password'}, min_length=8, max_length=255)
-    password_again = CharField(label=_("Password"), style={'input_type':'password'}, min_length=8, max_length=255)
+    password = CharField(label=_("Password"), style={'input_type': 'password'}, min_length=8, max_length=255)
+    password_again = CharField(label=_("Password"), style={'input_type': 'password'}, min_length=8, max_length=255)
 
     def validate(self, data):
         if data['password'] != data['password_again']:
@@ -81,14 +81,15 @@ class PasswordSerializer(Serializer):
 class SignupSerializer(Serializer):
     username = CharField(max_length=255)
     email = EmailField(max_length=255)
-    password = CharField(label=_("Password"), style={'input_type':'password'}, min_length=8, max_length=255)
-    password_again = CharField(label=_("Password Again"), style={'input_type':'password'}, min_length=8, max_length=255)
+    password = CharField(label=_("Password"), style={'input_type': 'password'}, min_length=8, max_length=255)
+    password_again = CharField(label=_("Password Again"), style={'input_type': 'password'}, min_length=8,
+                               max_length=255)
 
     class Meta:
         fields = ['username', 'email', 'password', 'password_again']
         extra_kwargs = {
-            'password':{'write_only':True},
-            'password_again':{'write_only':True}
+            'password':       {'write_only': True},
+            'password_again': {'write_only': True}
         }
 
     def create(self, validated_data):

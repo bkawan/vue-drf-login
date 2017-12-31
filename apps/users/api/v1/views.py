@@ -10,7 +10,7 @@ class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     parser_classes = (MultiPartParser, FormParser, JSONParser)
-    # permission_classes = []
+    http_method_names = ['put', 'patch','get']
 
     def get_object(self):
         if self.kwargs.get(self.lookup_field) == 'me':
