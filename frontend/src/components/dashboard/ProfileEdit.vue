@@ -1,16 +1,16 @@
 <template>
   <div id="signup">
     <div class="container">
-      <h1 class="py-3 text-center">Registration Form</h1>
+      <h1 class="py-3 text-center">Edit Profile</h1>
       <form action="" class="" enctype="multipart/form-data">
-        <div class="form-group row" v-for="(val, key) in signupForm">
+        <div class="form-group row" v-for="(val, key) in profileEditForm">
           <label for="" class="col-3 col-form-label text-right">{{unCamelCase(key)}} : </label>
-          <div class="col-6" v-if="signupForm[key].type === 'radio'">
+          <div class="col-6" v-if="profileEditForm[key].type === 'radio'">
             <input class=""
                    type="radio"
                    id="male"
                    value="Male"
-                   v-model="signupForm[key].value"
+                   v-model="profileEditForm[key].value"
                    @click="clearErrors(key)"
             >
             <label for="male">Male</label>
@@ -18,19 +18,19 @@
             <input type="radio"
                    id="female"
                    value="Female"
-                   v-model="signupForm[key].value"
+                   v-model="profileEditForm[key].value"
                    @click="clearErrors(key)"
             >
             <label for="female">Female</label>
             <br>
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
-          <div class="col-6" v-else-if="signupForm[key].type=='select'">
+          <div class="col-6" v-else-if="profileEditForm[key].type=='select'">
             <select name="" id=""
-                    v-model="signupForm[key].value"
+                    v-model="profileEditForm[key].value"
                     @click="clearErrors(key)"
             >
-              <option v-for="option in signupForm[key].options"
+              <option v-for="option in profileEditForm[key].options"
                       :value="option"
 
               >
@@ -41,10 +41,9 @@
           </div>
           <div class="col-6" v-else>
             <input class="form-control"
-                   :type="signupForm[key].type"
-                   v-model="signupForm[key].value"
+                   :type="profileEditForm[key].type"
+                   v-model="profileEditForm[key].value"
                    @keyup="clearErrors(key)"
-
             >
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
@@ -54,13 +53,7 @@
           <div class="col-6">
             <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
             <img :src="avatar" alt="">
-            <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
-          </div>
-        </div>
-        <div class="row pt-3">
-          <div class="col-3"></div>
-          <div class="col-6">
-            <p class="small text-right">Already have account ? <a href="login">Login</a></p>
+            <button @click='signup' class="btn btn-outline-success float-right">Save</button>
           </div>
         </div>
       </form>
@@ -77,7 +70,7 @@
     name: 'signup',
     data() {
       return {
-        signupForm: {
+        profileEditForm: {
           salutation: {
             value: '',
             type: 'select',
@@ -108,24 +101,13 @@
             value: '',
             type: 'email'
           },
-          password: {
-
-            value: '',
-            type: 'password'
-          },
-          passwordAgain: {
-            value: '',
-            type: 'password'
-          },
-          avatar:'sdf'
+          avatar: 'sdf'
         },
         errors: {
           firstName: '',
           lastName: '',
           username: '',
           email: '',
-          password: '',
-          passwordAgain: '',
           gender: '',
           salutation: '',
         }
@@ -134,15 +116,13 @@
     },
     methods: {
       signup(event) {
-        axios.post(`http://localhost:8000/api/v1/users/`, {
-          'first_name': this.signupForm.firstName.value,
-          'last_name': this.signupForm.lastName.value,
-          'salutation': this.signupForm.salutation.value,
-          'gender': this.signupForm.gender.value,
-          'username': this.signupForm.username.value,
-          'email': this.signupForm.email.value,
-          'password': this.signupForm.password.value,
-          'password_again': this.signupForm.passwordAgain.value,
+        axios.put(`http://localhost:8000/api/v1/users/`, {
+          'first_name': this.profileEditForm.firstName.value,
+          'last_name': this.profileEditForm.lastName.value,
+          'salutation': this.profileEditForm.salutation.value,
+          'gender': this.profileEditForm.gender.value,
+          'username': this.profileEditForm.username.value,
+          'email': this.profileEditForm.email.value,
           'avatar': this.avatar,
         })
           .then(response => {
@@ -157,9 +137,6 @@
               }
               if (v == 'last_name') {
                 this.errors.lastName = errors[v][0]
-              }
-              if (v == 'password_again') {
-                this.errors.passwordAgain = errors[v][0]
               }
               this.errors[v] = errors[v][0]
             }
@@ -209,6 +186,5 @@
 
   }
 </script>
-
 
 
