@@ -60,12 +60,13 @@ class Base64ImageField(serializers.ImageField):
 
 class UserSerializer(ModelSerializer):
     avatar = Base64ImageField(
-            max_length=None, use_url=True, allow_null=True,allow_empty_file=True
+            max_length=None, use_url=True, allow_null=True,read_only=True
     )
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'salutation', 'first_name', 'last_name', 'gender', 'mobile', 'avatar','date_joined']
+        fields = ['id', 'username', 'email', 'salutation', 'first_name', 'last_name', 'gender', 'mobile', 'avatar',
+                  'date_joined']
 
 
 class PasswordSerializer(Serializer):

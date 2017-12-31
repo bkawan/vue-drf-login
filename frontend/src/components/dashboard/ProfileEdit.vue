@@ -51,8 +51,8 @@
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
-            <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
-            <img :src="avatar" alt="">
+            <input type="file" accept="image/*" @change="onFileChange" :value="profileEditForm.avatar">
+            <img :src="profileEditForm.avatar" alt="">
             <button @click='signup' class="btn btn-outline-success float-right">Save</button>
           </div>
         </div>
@@ -65,9 +65,7 @@
 <script>
   import axios from 'axios'
   import swal from 'sweetalert'
-
   export default {
-    name: 'signup',
     data() {
       return {
         profileEditForm: {
@@ -101,7 +99,11 @@
             value: '',
             type: 'email'
           },
-          avatar: 'sdf'
+          mobile: {
+            value: '',
+            type: 'text'
+          },
+          avatar: ''
         },
         errors: {
           firstName: '',
@@ -110,25 +112,35 @@
           email: '',
           gender: '',
           salutation: '',
+//          mobile:''
         }
       }
 
     },
     methods: {
       signup(event) {
-        axios.put(`http://localhost:8000/api/v1/users/`, {
+        let token = localStorage.getItem('token');
+        var t = 'Token ' + token;
+        axios.put(`http://localhost:8000/api/v1/users/me/`, {
           'first_name': this.profileEditForm.firstName.value,
           'last_name': this.profileEditForm.lastName.value,
           'salutation': this.profileEditForm.salutation.value,
           'gender': this.profileEditForm.gender.value,
           'username': this.profileEditForm.username.value,
           'email': this.profileEditForm.email.value,
-          'avatar': this.avatar,
+          'mobile': this.profileEditForm.mobile.value,
+          'avatar': this.profileEditForm.avatar,
+        }, {
+          headers: {
+
+            Authorization: t
+          }
         })
           .then(response => {
             console.log(response);
-            this.$router.push('/login')
+            this.$router.push('/dashboard/profile/')
           }).catch(error => {
+          alert(error.response.data)
           const errors = error.response.data
           for (var v in errors) {
             if (v) {
@@ -182,6 +194,28 @@
 
       }
 
+    },
+    created() {
+      let token = localStorage.getItem('token');
+      var t = 'Token ' + token;
+      axios.get(`http://localhost:8000/api/v1/users/me/`, {
+        headers: {
+          Authorization: t
+        }
+      }).then(response => {
+        this.profileEditForm.firstName.value = response.data.first_name;
+        this.profileEditForm.lastName.value = response.data.last_name;
+        this.profileEditForm.username.value = response.data.username;
+        this.profileEditForm.gender.value = response.data.gender;
+        this.profileEditForm.email.value = response.data.email;
+        this.profileEditForm.salutation.value = response.data.salutation;
+        this.profileEditForm.avatar = this.createImage(response.data.avatar);
+        this.profileEditForm.mobile.value = response.data.mobile;
+        console.log(response)
+
+      }).catch(error => {
+        console.log(error)
+      })
     }
 
   }

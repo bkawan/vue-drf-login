@@ -15,7 +15,7 @@
               >
               <div class="media-body">
                 <h5 class="mt-0">{{userDetail.salutation}} {{userDetail.firstName}} {{ userDetail.lastName}}
-                  <span class="float-right"><a href="profile/edit" class="pr-3 btn btn-primary">Edit</a></span></h5>
+                  <span class="float-right"><a href="/dashboard/profile/edit/" class="pr-3 btn btn-primary">Edit</a></span></h5>
                 Username : <strong>{{userDetail.username}}</strong>
                 <br>
                 <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.username}}</strong>
@@ -33,7 +33,6 @@
         </div>
       </div>
     </div>
-  </div>
   </div>
 </template>
 
