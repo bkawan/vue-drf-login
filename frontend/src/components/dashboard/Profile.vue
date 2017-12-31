@@ -24,7 +24,7 @@
                 <br>
                 <i class="fa fa-mobile-phone"></i> Mobile: <strong> {{userDetail.mobile}}</strong>
                 <br>
-                <i class="fa fa-clock-o"></i> Date Joined: <strong> {{userDetail.dateJoined}}</strong>
+                <i class="fa fa-clock-o"></i> Date Joined: <strong> {{userDetail.dateJoined | fromNow}}</strong>
                 <br>
 
               </div>
@@ -41,6 +41,7 @@
 <script>
 
   import axios from 'axios'
+  import moment from 'moment'
 
   export default {
 
@@ -68,7 +69,11 @@
             return str.toUpperCase();
           })
       }
-
+    },
+    filters: {
+      fromNow(value) {
+        return moment(value).fromNow()
+      }
     },
     created() {
       let token = localStorage.getItem('token');
