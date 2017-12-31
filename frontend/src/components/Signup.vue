@@ -10,7 +10,6 @@
                    :type="signupForm[key].type"
                    v-model="signupForm[key].value"
                    @keyup="clearErrors(key)"
-
             >
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
@@ -18,6 +17,7 @@
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
+            <p class="small text-danger" v-if="errors.nonFieldErrors">{{errors.nonFieldErrors}}</p>
             <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
           </div>
         </div>
@@ -84,13 +84,14 @@
           }).catch(error => {
           const errors = error.response.data;
           for (var v in errors) {
+
             if (v) {
               if (v == 'password_again') {
                 this.errors.passwordAgain = errors[v][0]
               }
-              if (y == 'non_field_errors') {
+              if (v == 'non_field_errors') {
 
-                this.errors.nonFieldErrors = errors[v][0]
+                this.errors.passwordAgain= errors[v][0]
               }
               this.errors[v] = errors[v][0]
             }
