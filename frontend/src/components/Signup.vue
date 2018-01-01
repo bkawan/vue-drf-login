@@ -83,6 +83,7 @@
             this.$router.push('/login')
           }).catch(error => {
           const errors = error.response.data;
+          console.log(errors)
           for (var v in errors) {
 
             if (v) {
