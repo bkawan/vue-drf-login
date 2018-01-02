@@ -51,8 +51,8 @@
         <div class="row">
           <div class="col-3"></div>
           <div class="col-6">
-            <input type="file" accept="image/*" @change="onFileChange" :value="profileEditForm.avatar">
-            <img :src="profileEditForm.avatar" alt="">
+            <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
+            <img :src="avatar" alt="">
             <button @click='signup' class="btn btn-outline-success float-right">Save</button>
           </div>
         </div>
@@ -65,6 +65,7 @@
 <script>
   import axios from 'axios'
   import swal from 'sweetalert'
+
   export default {
     data() {
       return {
@@ -103,8 +104,8 @@
             value: '',
             type: 'text'
           },
-          avatar: ''
         },
+        avatar: '',
         errors: {
           firstName: '',
           lastName: '',
@@ -112,7 +113,8 @@
           email: '',
           gender: '',
           salutation: '',
-//          mobile:''
+          mobile: '',
+          avatar: ''
         }
       }
 
@@ -120,6 +122,7 @@
     methods: {
       signup(event) {
         let token = localStorage.getItem('token');
+        console.log(this.avatar);
         var t = 'Token ' + token;
         axios.put(`http://localhost:8000/api/v1/users/me/`, {
           'first_name': this.profileEditForm.firstName.value,
@@ -129,7 +132,7 @@
           'username': this.profileEditForm.username.value,
           'email': this.profileEditForm.email.value,
           'mobile': this.profileEditForm.mobile.value,
-          'avatar': this.profileEditForm.avatar,
+          'avatar': this.avatar,
         }, {
           headers: {
 
@@ -140,7 +143,7 @@
             console.log(response);
             this.$router.push('/dashboard/profile/')
           }).catch(error => {
-          alert(error.response.data)
+          console.log(error.response.data);
           const errors = error.response.data
           for (var v in errors) {
             if (v) {
@@ -175,9 +178,9 @@
       },
       onFileChange(event) {
         let files = event.target.files;
+        console.log(files);
         if (!files.length)
           return;
-
         this.createImage(files[0])
       },
       createImage(file) {
@@ -188,9 +191,8 @@
           let vm = this;
           vm.avatar = e.target.result;
           console.log(e.target.result)
-        },
-          reader.readAsDataURL(file);
-
+        };
+        reader.readAsDataURL(file);
 
       }
 
@@ -209,10 +211,9 @@
         this.profileEditForm.gender.value = response.data.gender;
         this.profileEditForm.email.value = response.data.email;
         this.profileEditForm.salutation.value = response.data.salutation;
-        this.profileEditForm.avatar = this.createImage(response.data.avatar);
         this.profileEditForm.mobile.value = response.data.mobile;
-        console.log(response)
-
+        this.avatar = response.data.avatar;
+//        this.avatar = this.createImage(response.data.avatar.url);
       }).catch(error => {
         console.log(error)
       })

@@ -18,7 +18,7 @@
                   <span class="float-right"><a href="/dashboard/profile/edit/" class="pr-3 btn btn-primary">Edit</a></span></h5>
                 Username : <strong>{{userDetail.username}}</strong>
                 <br>
-                <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.username}}</strong>
+                <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.email}}</strong>
                 <br>
                 <i class="fa fa-male"></i> Gender: <strong> {{userDetail.gender}}</strong>
                 <br>
