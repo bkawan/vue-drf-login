@@ -16,7 +16,7 @@
           </div>
           <div class="col-6">
             <p class="small text-danger" v-if="errors.non_field_errors">{{ errors.non_field_errors}}</p>
-            <button @click='login' class="btn btn-outline-success float-right">Login</button>
+            <button @click='Login' class="btn btn-outline-success float-right">Login</button>
           </div>
 
         </div>
@@ -39,7 +39,7 @@
   import swal from 'sweetalert'
 
   export default {
-    name: 'login',
+    name: 'Login',
     data() {
       return {
         loginForm: {

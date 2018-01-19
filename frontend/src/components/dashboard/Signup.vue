@@ -54,7 +54,7 @@
           <div class="col-6">
             <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
             <img :src="avatar" alt="">
-            <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
+            <button @click='Signup' class="btn btn-outline-success float-right">Signup</button>
           </div>
         </div>
         <div class="row pt-3">
@@ -74,7 +74,7 @@
   import swal from 'sweetalert'
 
   export default {
-    name: 'signup',
+    name: 'Signup',
     data() {
       return {
         signupForm: {
