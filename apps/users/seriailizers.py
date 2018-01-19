@@ -35,8 +35,14 @@ class Base64ImageField(serializers.ImageField):
             # Try to decode the file. Return validation error if it fails.
             try:
                 decoded_file = base64.b64decode(data)
-            except TypeError:
-                self.fail('invalid_image')
+            except (TypeError, ValueError) as e:
+                try:
+                    import requests
+                    # convert image url to image
+                    encoded_file = base64.b64encode(requests.get(data).content)
+                    decoded_file = base64.b64decode(encoded_file)
+                except(TypeError, ValueError) as e:
+                    self.fail('invalid_image')
 
             # Generate file name:
             file_name = str(uuid.uuid4())[:12]  # 12 characters are more than enough.
@@ -60,7 +66,7 @@ class Base64ImageField(serializers.ImageField):
 
 class UserSerializer(ModelSerializer):
     avatar = Base64ImageField(
-        max_length=None, use_url=True, allow_null=True, allow_empty_file=True,required=False
+        max_length=None, use_url=True, allow_empty_file=True, allow_null=True
 
     )
 

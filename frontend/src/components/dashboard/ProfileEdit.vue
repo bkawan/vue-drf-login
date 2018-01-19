@@ -53,6 +53,7 @@
           <div class="col-6">
             <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
             <img :src="avatar" alt="">
+            <p class="small text-danger" v-if="errors.avatar">{{errors.avatar}}</p>
             <button @click='signup' class="btn btn-outline-success float-right">Save</button>
           </div>
         </div>
@@ -122,7 +123,6 @@
     methods: {
       signup(event) {
         let token = localStorage.getItem('token');
-        console.log(this.avatar);
         var t = 'Token ' + token;
         axios.put(`http://localhost:8000/api/v1/users/me/`, {
           'first_name': this.profileEditForm.firstName.value,
@@ -140,29 +140,29 @@
           }
         })
           .then(response => {
-            console.log(response);
-            this.$router.push('/dashboard/profile/')
+            console.log(response)
+            window.history.length > 1
+              ? this.$router.go(-1)
+              : this.$router.push('/dashboard/profile');
+
           }).catch(error => {
-          console.log(error.response.data);
-          const errors = error.response.data
-          for (var v in errors) {
+          const _errors = error.response.data;
+
+          for (var v in _errors) {
             if (v) {
               if (v == 'first_name') {
-                this.errors.firstName = errors[v][0]
+                this.errors.firstName = _errors[v][0]
               }
               if (v == 'last_name') {
-                this.errors.lastName = errors[v][0]
+                this.errors.lastName = _errors[v][0]
               }
-              this.errors[v] = errors[v][0]
+              this.errors[v] = _errors[v][0]
             }
           }
 
-
         });
 
-        event.preventDefault()
-
-
+        event.preventDefault();
       },
       unCamelCase(value) {
         return value.replace(/([A-Z])/g, ' $1')
@@ -177,23 +177,24 @@
 
       },
       onFileChange(event) {
-        let files = event.target.files;
+        let form = new FormData();
+        let files = event.target.files || e.dataTransfer.files;
+        ;
         console.log(files);
         if (!files.length)
           return;
         this.createImage(files[0])
       },
       createImage(file) {
+
         let image = new Image();
         let reader = new FileReader();
-
         reader.onload = (e) => {
           let vm = this;
           vm.avatar = e.target.result;
-          console.log(e.target.result)
-        };
-        reader.readAsDataURL(file);
+          reader.readAsDataURL(file);
 
+        }
       }
 
     },
@@ -213,7 +214,7 @@
         this.profileEditForm.salutation.value = response.data.salutation;
         this.profileEditForm.mobile.value = response.data.mobile;
         this.avatar = response.data.avatar;
-//        this.avatar = this.createImage(response.data.avatar.url);
+//        this.avatar = this.createImage(this.$refs.cropper.replace(response.data.avatar));
       }).catch(error => {
         console.log(error)
       })
