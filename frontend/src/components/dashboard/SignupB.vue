@@ -133,7 +133,6 @@
           'avatar': this.avatar,
         })
           .then(response => {
-            console.log(response);
             this.$router.push('/login')
           }).catch(error => {
           const errors = error.response.data
