@@ -65,6 +65,7 @@
 
 <script>
   import axios from 'axios'
+  import {baseUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
@@ -122,9 +123,7 @@
     },
     methods: {
       signup(event) {
-        let token = localStorage.getItem('token');
-        var t = 'Token ' + token;
-        axios.put(`http://localhost:8000/api/v1/users/me/`, {
+        axios.put(baseUrl+`users/me/`,{ headers: getHeader() }, {
           'first_name': this.profileEditForm.firstName.value,
           'last_name': this.profileEditForm.lastName.value,
           'salutation': this.profileEditForm.salutation.value,
@@ -133,11 +132,6 @@
           'email': this.profileEditForm.email.value,
           'mobile': this.profileEditForm.mobile.value,
           'avatar': this.avatar,
-        }, {
-          headers: {
-
-            Authorization: t
-          }
         })
           .then(response => {
             console.log(response)
@@ -199,13 +193,7 @@
 
     },
     created() {
-      let token = localStorage.getItem('token');
-      var t = 'Token ' + token;
-      axios.get(`http://localhost:8000/api/v1/users/me/`, {
-        headers: {
-          Authorization: t
-        }
-      }).then(response => {
+      HTTP.get(`users/me/`).then(response => {
         this.profileEditForm.firstName.value = response.data.first_name;
         this.profileEditForm.lastName.value = response.data.last_name;
         this.profileEditForm.username.value = response.data.username;

@@ -3,8 +3,8 @@
     <div class="container pt-3">
       <h3>Welcome to Vue Js and and Django Rest Framework Authentication System</h3>
       <div class="py-lg-5 my-lg-5 offset-4">
-        <a class="btn btn-outline-primary" href="signup">Sign Up</a>
-        <a class="btn btn-outline-success" href="login">Login</a>
+        <router-link class="btn btn-outline-primary" to="signup">Sign Up</router-link>
+        <router-link class="btn btn-outline-success" to="login">Login</router-link>
       </div>
 
     </div>

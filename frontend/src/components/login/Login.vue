@@ -16,7 +16,7 @@
           </div>
           <div class="col-6">
             <p class="small text-danger" v-if="errors.non_field_errors">{{ errors.non_field_errors}}</p>
-            <button @click='Login' class="btn btn-outline-success float-right">Login</button>
+            <button @click='login' class="btn btn-outline-success float-right">Login</button>
           </div>
 
         </div>
@@ -24,7 +24,7 @@
         <div class="row pt-3">
           <div class="col-3"></div>
           <div class="col-6">
-            <p class="small text-right">Don't have account ? <a href="signup">Register</a></p>
+            <p class="small text-right">Don't have account ? <router-link to="signup">Register</router-link></p>
           </div>
         </div>
       </form>
@@ -36,6 +36,7 @@
 
 <script>
   import axios from 'axios'
+  import {loginUrl} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
@@ -64,14 +65,21 @@
     },
     methods: {
       login(event) {
-        axios.post(`http://localhost:8000/api/v1/auth/login/`, {
+        let authUser = ''
+        axios.post(loginUrl, {
           'username': this.loginForm.username.value,
           'password': this.loginForm.password.value,
         })
           .then(response => {
-            console.log(response);
-            localStorage.setItem('token', response.data.token);
+            if(response.status === 200){
+              alert(response)
+              authUser = response.data.token
+              window.localStorage.setItem('token',authUser)
+            }
             this.$router.push('/dashboard/profile')
+            // console.log(response);
+            // localStorage.setItem('token', response.data.token);
+            // this.$router.push('/dashboard/profile')
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors);

@@ -34,7 +34,9 @@
 </template>
 
 <script>
+
   import axios from 'axios'
+  import {baseUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
@@ -72,7 +74,7 @@
     },
     methods: {
       signup(event) {
-        axios.post(`http://localhost:8000/api/v1/auth/signup/`, {
+        axios.post(baseUrl+`auth/signup/`, {
           'username': this.signupForm.username.value,
           'email': this.signupForm.email.value,
           'password': this.signupForm.password.value,
@@ -80,7 +82,7 @@
         })
           .then(response => {
             console.log(response);
-            this.$router.push('/login')
+            this.$router.push({name: 'login'})
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors)

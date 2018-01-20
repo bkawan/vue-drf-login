@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="bg-inverse text-white">
+  <div id="a" class="bg-inverse text-white">
     <div class="container py-3" id="main-container">
       <router-view></router-view>
     </div>
@@ -14,7 +14,7 @@
 <script>
   //  import Signup from './components/Signup.vue'
   export default {
-    name: 'app',
+    name: 'a',
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',

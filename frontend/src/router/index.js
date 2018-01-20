@@ -57,20 +57,22 @@ export const router = new Router({
       component: function (resolve) {
         require(['../components/404'], resolve)
       },
+
     },
     { path: '*', redirect: '/404', hidden: true }
   ]
 })
 function guardRoute (to, from, next) {
 
-  const auth = router.app.$options.store.state.auth
+  let auth = window.localStorage.getItem('token')
 
-  if (!auth.isLoggedIn) {
-    next({
-      path: '/login',
-      query: { redirect: to.fullPath }
-    })
-  } else {
+  if (auth) {
     next()
+  } else {
+     next({
+      path: '/login',
+      query: { redirect: to }
+    })
+
   }
 }
