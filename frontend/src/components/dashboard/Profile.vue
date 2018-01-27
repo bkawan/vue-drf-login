@@ -15,7 +15,7 @@
               >
               <div class="media-body">
                 <h5 class="mt-0">{{userDetail.salutation}} {{userDetail.firstName}} {{ userDetail.lastName}}
-                  <span class="float-right"><a href="/dashboard/profile/edit/" class="pr-3 btn btn-primary">Edit</a></span></h5>
+                  <span class="float-right"><router-link to="/dashboard/profile/edit/" class="pr-3 btn btn-primary">Edit</router-link></span></h5>
                 Username : <strong>{{userDetail.username}}</strong>
                 <br>
                 <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.email}}</strong>
@@ -40,6 +40,7 @@
 <script>
 
   import axios from 'axios'
+  import {baseUrl, getHeader} from '../../config/http-common'
   import moment from 'moment'
 
   export default {
@@ -75,13 +76,7 @@
       }
     },
     created() {
-      let token = localStorage.getItem('token');
-      var t = 'Token ' + token;
-      axios.get(`http://localhost:8000/api/v1/users/me/`, {
-        headers: {
-          Authorization: t
-        }
-      }).then(response => {
+      axios.get(baseUrl+`users/me/`,{headers: getHeader()}).then(response => {
         this.userDetail.firstName = response.data.first_name;
         this.userDetail.lastName = response.data.last_name;
         this.userDetail.username = response.data.username;

@@ -24,7 +24,7 @@
         <div class="row pt-3">
           <div class="col-3"></div>
           <div class="col-6">
-            <p class="small text-right">Already have account ? <a href="login">Login</a></p>
+            <p class="small text-right">Already have account ? <a href="../login">Login</a></p>
           </div>
         </div>
       </form>
@@ -34,11 +34,13 @@
 </template>
 
 <script>
+
   import axios from 'axios'
+  import {baseUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
-    name: 'signup',
+    name: 'Signup',
     data() {
       return {
         signupForm: {
@@ -72,7 +74,7 @@
     },
     methods: {
       signup(event) {
-        axios.post(`http://localhost:8000/api/v1/auth/signup/`, {
+        axios.post(baseUrl+`auth/signup/`, {
           'username': this.signupForm.username.value,
           'email': this.signupForm.email.value,
           'password': this.signupForm.password.value,
@@ -80,7 +82,7 @@
         })
           .then(response => {
             console.log(response);
-            this.$router.push('/login')
+            this.$router.push({name: 'login'})
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors)

@@ -1,48 +1,78 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Signup from '../components/Signup.vue'
-import Login from '../components/Login.vue'
-import Index from '../components/Index.vue'
-import Dashboard from '../components/Dashboard.vue'
-import Profile from '../components/dashboard/Profile.vue'
-import ProfileEdit from '../components/dashboard/ProfileEdit.vue'
 
-Vue.use(Router);
-export default new Router({
+Vue.use(Router)
+
+export const router = new Router({
   mode: 'history',
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: Index
+      name: 'Index',
+      component: function (resolve) {
+        require(['../components/Index'], resolve)
+      }
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: function (resolve) {
+        require(['../components/login/Login'], resolve)
+      }
     },
     {
       path: '/signup',
-      name: 'signup',
-      component: Signup
-    }
-    ,
-    {
-      path: '/login',
-      name: 'login',
-      component: Login
+      name: 'Signup',
+      component: function (resolve) {
+        require(['../components/signup/Signup'], resolve)
+      }
     },
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard
+      component: function (resolve) {
+        require(['../components/dashboard/Dashboard'], resolve)
+      },
+      beforeEnter: guardRoute
     },
     {
       path: '/dashboard/profile',
       name: 'profile',
-      component: Profile
+      component: function (resolve) {
+        require(['../components/dashboard/Profile'], resolve)
+      },
+      beforeEnter: guardRoute
     },
     {
       path: '/dashboard/profile/edit',
       name: 'profileEdit',
-      component: ProfileEdit
+      component: function (resolve) {
+        require(['../components/dashboard/ProfileEdit'], resolve)
+      },
+      beforeEnter: guardRoute
     },
+    {
+      path: '/404',
+      name: '404',
+      component: function (resolve) {
+        require(['../components/404'], resolve)
+      },
 
+    },
+    { path: '*', redirect: '/404', hidden: true }
   ]
 })
+function guardRoute (to, from, next) {
 
+  let auth = window.localStorage.getItem('token')
+
+  if (auth) {
+    next()
+  } else {
+     next({
+      path: '/login',
+      query: { redirect: to }
+    })
+
+  }
+}

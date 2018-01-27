@@ -54,13 +54,13 @@
           <div class="col-6">
             <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
             <img :src="avatar" alt="">
-            <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
+            <button @click='Signup' class="btn btn-outline-success float-right">Signup</button>
           </div>
         </div>
         <div class="row pt-3">
           <div class="col-3"></div>
           <div class="col-6">
-            <p class="small text-right">Already have account ? <a href="login">Login</a></p>
+            <p class="small text-right">Already have account ? <router-link to="login">Login</router-link></p>
           </div>
         </div>
       </form>
@@ -71,10 +71,11 @@
 
 <script>
   import axios from 'axios'
+  import {baseUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
-    name: 'signup',
+    name: 'Signup',
     data() {
       return {
         signupForm: {
@@ -123,7 +124,7 @@
     },
     methods: {
       signup(event) {
-        axios.get(`http://localhost:8000/api/v1/users/`, {
+        axios.post(baseUrl+'users/',{headers: getHeader()},{
           'first_name': this.signupForm.firstName.value,
           'last_name': this.signupForm.lastName.value,
           'salutation': this.signupForm.salutation.value,
@@ -133,7 +134,7 @@
           'avatar': this.avatar,
         })
           .then(response => {
-            this.$router.push('/login')
+            this.$router.push({name: 'login'})
           }).catch(error => {
           const errors = error.response.data
           for (var v in errors) {
