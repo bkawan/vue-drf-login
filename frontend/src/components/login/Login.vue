@@ -80,7 +80,7 @@
               authUser = response.data.token;
               window.localStorage.setItem('token', authUser)
             }
-            this.$router.push('/dashboard/profile')
+            this.$router.push({'name': 'dashboard'})
             // console.log(response);
             // localStorage.setItem('token', response.data.token);
             // this.$router.push('/dashboard/profile')
