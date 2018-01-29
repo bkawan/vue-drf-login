@@ -24,7 +24,9 @@
         <div class="row pt-3">
           <div class="col-3"></div>
           <div class="col-6">
-            <p class="small text-right">Don't have account ? <router-link to="signup">Register</router-link></p>
+            <p class="small text-right">Don't have account ?
+              <router-link to="signup">Register</router-link>
+            </p>
           </div>
         </div>
       </form>
@@ -41,7 +43,7 @@
 
   export default {
     name: 'Login',
-    data() {
+    data () {
       return {
         loginForm: {
           username: {
@@ -64,17 +66,16 @@
 
     },
     methods: {
-      login(event) {
+      login (event) {
         let authUser = ''
         axios.post(loginUrl, {
           'username': this.loginForm.username.value,
           'password': this.loginForm.password.value,
         })
           .then(response => {
-            if(response.status === 200){
-              alert(response)
-              authUser = response.data.token
-              window.localStorage.setItem('token',authUser)
+            if (response.status === 200) {
+              authUser = response.data.token;
+              window.localStorage.setItem('token', authUser)
             }
             this.$router.push('/dashboard/profile')
             // console.log(response);
@@ -94,12 +95,12 @@
         });
         event.preventDefault()
       },
-      clearErrors(field) {
+      clearErrors (field) {
         this.errors[field] = '';
         this.errors.non_field_errors = '';
 
       },
-      unCamelCase(value) {
+      unCamelCase (value) {
         return value.replace(/([A-Z])/g, ' $1')
         // uppercase the first character
           .replace(/^./, function (str) {

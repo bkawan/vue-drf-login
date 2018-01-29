@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export const router = new Router({
   mode: 'history',
@@ -15,14 +15,14 @@ export const router = new Router({
     },
     {
       path: '/login',
-      name: 'Login',
+      name: 'login',
       component: function (resolve) {
         require(['../components/login/Login'], resolve)
       }
     },
     {
       path: '/signup',
-      name: 'Signup',
+      name: 'signup',
       component: function (resolve) {
         require(['../components/signup/Signup'], resolve)
       }
@@ -56,22 +56,23 @@ export const router = new Router({
       name: '404',
       component: function (resolve) {
         require(['../components/404'], resolve)
-      },
+      }
 
     },
-    { path: '*', redirect: '/404', hidden: true }
+    {path: '*', redirect: '/404', hidden: true}
   ]
-})
+});
+
 function guardRoute (to, from, next) {
 
-  let auth = window.localStorage.getItem('token')
+  let auth = window.localStorage.getItem('token');
 
   if (auth) {
     next()
   } else {
-     next({
+    next({
       path: '/login',
-      query: { redirect: to }
+      query: {redirect: to}
     })
 
   }
