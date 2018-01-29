@@ -123,7 +123,8 @@
     },
     methods: {
       signup (event) {
-        axios.put(profileUrl, {headers: getHeader()}, {
+        console.log(getHeader())
+        axios.put(profileUrl, {
           'first_name': this.profileEditForm.firstName.value,
           'last_name': this.profileEditForm.lastName.value,
           'salutation': this.profileEditForm.salutation.value,
@@ -132,7 +133,7 @@
           'email': this.profileEditForm.email.value,
           'mobile': this.profileEditForm.mobile.value,
           'avatar': this.avatar,
-        })
+        }, {headers: getHeader()})
           .then(response => {
             console.log(response)
             window.history.length > 1
@@ -140,6 +141,7 @@
               : this.$router.push({name: 'profile'});
 
           }).catch(error => {
+          console.log(error)
           const _errors = error.response.data;
 
           for (var v in _errors) {
