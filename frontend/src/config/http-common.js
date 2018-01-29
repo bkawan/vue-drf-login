@@ -1,6 +1,7 @@
 export const host = 'http://localhost:8000/';
 export const baseApiUrl = host + 'api/v1/';
 export const loginUrl = baseApiUrl + 'auth/login/';
+export const signupUrl = baseApiUrl + 'signup/';
 
 
 export const getHeader = function () {

@@ -36,12 +36,12 @@
 <script>
 
   import axios from 'axios'
-  import {baseUrl, getHeader} from '../../config/http-common'
+  import {signupUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
     name: 'Signup',
-    data() {
+    data () {
       return {
         signupForm: {
           username: {
@@ -73,8 +73,8 @@
 
     },
     methods: {
-      signup(event) {
-        axios.post(baseUrl+`auth/signup/`, {
+      signup (event) {
+        axios.post(signupUrl, {
           'username': this.signupForm.username.value,
           'email': this.signupForm.email.value,
           'password': this.signupForm.password.value,
@@ -94,7 +94,7 @@
               }
               if (v == 'non_field_errors') {
 
-                this.errors.passwordAgain= errors[v][0]
+                this.errors.passwordAgain = errors[v][0]
               }
               this.errors[v] = errors[v][0]
             }
@@ -107,14 +107,14 @@
 
 
       },
-      unCamelCase(value) {
+      unCamelCase (value) {
         return value.replace(/([A-Z])/g, ' $1')
         // uppercase the first character
           .replace(/^./, function (str) {
             return str.toUpperCase();
           })
       },
-      clearErrors(field) {
+      clearErrors (field) {
         this.errors[field] = '';
         this.errors.nonFieldErrors = '';
 
