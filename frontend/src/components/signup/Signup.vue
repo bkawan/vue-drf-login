@@ -9,7 +9,8 @@
             <input class="form-control"
                    :type="signupForm[key].type"
                    v-model="signupForm[key].value"
-                   @keyup="clearErrors(key)"
+                   @keyup.prevent="clearErrors(key)"
+                   @keyup.enter.prevent="signup"
             >
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
@@ -18,7 +19,7 @@
           <div class="col-3"></div>
           <div class="col-6">
             <p class="small text-danger" v-if="errors.nonFieldErrors">{{errors.nonFieldErrors}}</p>
-            <button @click='signup' class="btn btn-outline-success float-right">Signup</button>
+            <button @click.prevent='signup' class="btn btn-outline-success float-right">Signup</button>
           </div>
         </div>
         <div class="row pt-3">
@@ -100,11 +101,7 @@
             }
           }
 
-
         });
-
-        event.preventDefault()
-
 
       },
       unCamelCase (value) {
