@@ -15,7 +15,8 @@
               >
               <div class="media-body">
                 <h5 class="mt-0">{{userDetail.salutation}} {{userDetail.firstName}} {{ userDetail.lastName}}
-                  <span class="float-right"><router-link to="/dashboard/profile/edit/" class="pr-3 btn btn-primary">Edit</router-link></span></h5>
+                  <span class="float-right"><router-link to="/dashboard/profile/edit/"
+                                                         class="pr-3 btn btn-primary">Edit</router-link></span></h5>
                 Username : <strong>{{userDetail.username}}</strong>
                 <br>
                 <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.email}}</strong>
@@ -40,12 +41,12 @@
 <script>
 
   import axios from 'axios'
-  import {baseUrl, getHeader} from '../../config/http-common'
+  import {profileUrl, getHeader} from '../../config/http-common'
   import moment from 'moment'
 
   export default {
 
-    data() {
+    data () {
 
       return {
         userDetail: {
@@ -62,7 +63,7 @@
       }
     },
     methods: {
-      unCamelCase(value) {
+      unCamelCase (value) {
         return value.replace(/([A-Z])/g, ' $1')
         // uppercase the first character
           .replace(/^./, function (str) {
@@ -71,12 +72,14 @@
       }
     },
     filters: {
-      fromNow(value) {
+      fromNow (value) {
         return moment(value).fromNow()
       }
     },
-    created() {
-      axios.get(baseUrl+`users/me/`,{headers: getHeader()}).then(response => {
+    created () {
+      console.log(getHeader())
+      console.log('hello')
+      axios.get(profileUrl, {headers: getHeader()}).then(response => {
         this.userDetail.firstName = response.data.first_name;
         this.userDetail.lastName = response.data.last_name;
         this.userDetail.username = response.data.username;

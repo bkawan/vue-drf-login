@@ -70,17 +70,15 @@
     },
     methods: {
       login (event) {
-        let authUser = '';
         axios.post(loginUrl, {
           'username': this.loginForm.username.value,
           'password': this.loginForm.password.value,
         })
           .then(response => {
             if (response.status === 200) {
-              authUser = response.data.token;
-              window.localStorage.setItem('token', authUser)
+              window.localStorage.setItem('token', response.data.token)
             }
-            this.$router.push({'name': 'profile'})
+            this.$router.push({name: 'profile'})
             // console.log(response);
             // localStorage.setItem('token', response.data.token);
             // this.$router.push('/dashboard/profile')
