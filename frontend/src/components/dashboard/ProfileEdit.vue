@@ -65,11 +65,11 @@
 
 <script>
   import axios from 'axios'
-  import {baseUrl, getHeader} from '../../config/http-common'
+  import {profileUrl, getHeader} from '../../config/http-common'
   import swal from 'sweetalert'
 
   export default {
-    data() {
+    data () {
       return {
         profileEditForm: {
           salutation: {
@@ -122,8 +122,8 @@
 
     },
     methods: {
-      signup(event) {
-        axios.put(baseUrl+`users/me/`,{ headers: getHeader() }, {
+      signup (event) {
+        axios.put(profileUrl, {headers: getHeader()}, {
           'first_name': this.profileEditForm.firstName.value,
           'last_name': this.profileEditForm.lastName.value,
           'salutation': this.profileEditForm.salutation.value,
@@ -137,7 +137,7 @@
             console.log(response)
             window.history.length > 1
               ? this.$router.go(-1)
-              : this.$router.push('/dashboard/profile');
+              : this.$router.push({name: 'profile'});
 
           }).catch(error => {
           const _errors = error.response.data;
@@ -158,28 +158,27 @@
 
         event.preventDefault();
       },
-      unCamelCase(value) {
+      unCamelCase (value) {
         return value.replace(/([A-Z])/g, ' $1')
         // uppercase the first character
           .replace(/^./, function (str) {
             return str.toUpperCase();
           })
       },
-      clearErrors(field) {
+      clearErrors (field) {
         this.errors[field] = '';
         this.errors.non_field_errors = '';
 
       },
-      onFileChange(event) {
+      onFileChange (event) {
         let form = new FormData();
         let files = event.target.files || e.dataTransfer.files;
-        ;
         console.log(files);
         if (!files.length)
           return;
         this.createImage(files[0])
       },
-      createImage(file) {
+      createImage (file) {
 
         let image = new Image();
         let reader = new FileReader();
@@ -192,8 +191,8 @@
       }
 
     },
-    created() {
-      HTTP.get(`users/me/`).then(response => {
+    created () {
+      axios.get(profileUrl, {headers: getHeader()}).then(response => {
         this.profileEditForm.firstName.value = response.data.first_name;
         this.profileEditForm.lastName.value = response.data.last_name;
         this.profileEditForm.username.value = response.data.username;
