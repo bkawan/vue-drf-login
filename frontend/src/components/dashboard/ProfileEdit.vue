@@ -54,7 +54,7 @@
             <input type="file" accept="image/*" @change="onFileChange" :value="avatar">
             <img :src="avatar" alt="">
             <p class="small text-danger" v-if="errors.avatar">{{errors.avatar}}</p>
-            <button @click='signup' class="btn btn-outline-success float-right">Save</button>
+            <button @click.prevent='signup' class="btn btn-outline-success float-right">Save</button>
           </div>
         </div>
       </form>
@@ -124,6 +124,7 @@
     methods: {
       signup (event) {
         console.log(getHeader())
+        console.log(this.avatar)
         axios.put(profileUrl, {
           'first_name': this.profileEditForm.firstName.value,
           'last_name': this.profileEditForm.lastName.value,
@@ -141,9 +142,7 @@
               : this.$router.push({name: 'profile'});
 
           }).catch(error => {
-          console.log(error)
           const _errors = error.response.data;
-
           for (var v in _errors) {
             if (v) {
               if (v == 'first_name') {
@@ -158,7 +157,7 @@
 
         });
 
-        event.preventDefault();
+//        event.preventDefault();
       },
       unCamelCase (value) {
         return value.replace(/([A-Z])/g, ' $1')
@@ -178,6 +177,9 @@
         console.log(files);
         if (!files.length)
           return;
+        let file = files[0];
+        console.log("File name: " + file.fileName);
+        console.log("File size: " + file.fileSize);
         this.createImage(files[0])
       },
       createImage (file) {
@@ -187,13 +189,14 @@
         reader.onload = (e) => {
           let vm = this;
           vm.avatar = e.target.result;
-          reader.readAsDataURL(file);
 
-        }
+        };
+        reader.readAsDataURL(file);
       }
 
     },
     created () {
+
       axios.get(profileUrl, {headers: getHeader()}).then(response => {
         this.profileEditForm.firstName.value = response.data.first_name;
         this.profileEditForm.lastName.value = response.data.last_name;

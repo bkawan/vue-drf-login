@@ -2,3 +2,4 @@ Django
 django-rest-framework
 django-cors-headers
 Pillow
+requests

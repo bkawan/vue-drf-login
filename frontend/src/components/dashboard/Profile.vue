@@ -82,8 +82,6 @@
       }
     },
     created () {
-      console.log(getHeader())
-      console.log('hello')
       axios.get(profileUrl, {headers: getHeader()}).then(response => {
         this.userDetail.firstName = response.data.first_name;
         this.userDetail.lastName = response.data.last_name;
