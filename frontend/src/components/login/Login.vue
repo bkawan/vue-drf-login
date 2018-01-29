@@ -9,6 +9,7 @@
             <input class="form-control"
                    :type="loginForm[key].type"
                    v-model="loginForm[key].value"
+                   @keyup.enter.prevent="login"
                    @keyup="clearErrors(key)">
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
@@ -18,7 +19,7 @@
           </div>
           <div class="col-6">
             <p class="small text-danger" v-if="errors.non_field_errors">{{ errors.non_field_errors}}</p>
-            <button @click='login' class="btn btn-outline-success float-right">Login</button>
+            <button @click.prevent='login' class="btn btn-outline-success float-right">Login</button>
           </div>
 
         </div>
@@ -95,7 +96,6 @@
             }
           }
         });
-        event.preventDefault()
       },
       clearErrors (field) {
         this.errors[field] = '';
