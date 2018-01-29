@@ -15,8 +15,13 @@
               >
               <div class="media-body">
                 <h5 class="mt-0">{{userDetail.salutation}} {{userDetail.firstName}} {{ userDetail.lastName}}
-                  <span class="float-right"><router-link to="/dashboard/profile/edit/"
-                                                         class="pr-3 btn btn-primary">Edit</router-link></span></h5>
+                  <span class="float-right">
+                    <router-link
+                      :to="{'name':'profileEdit'}"
+                      class="pr-3 btn btn-primary">Edit
+                    </router-link>
+                  </span>
+                </h5>
                 Username : <strong>{{userDetail.username}}</strong>
                 <br>
                 <i class="fa fa-envelope"></i> Email: <strong> {{userDetail.email}}</strong>
