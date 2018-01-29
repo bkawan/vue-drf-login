@@ -6,7 +6,9 @@
         <div class="form-group row" v-for="(val,key) in loginForm">
           <label for="" class="col-3 col-form-label text-right">{{unCamelCase(key)}} : </label>
           <div class="col-6">
-            <input class="form-control" :type="loginForm[key].type" v-model="loginForm[key].value"
+            <input class="form-control"
+                   :type="loginForm[key].type"
+                   v-model="loginForm[key].value"
                    @keyup="clearErrors(key)">
             <p class="small text-danger" v-if="errors[key]">{{errors[key]}}</p>
           </div>
@@ -25,7 +27,7 @@
           <div class="col-3"></div>
           <div class="col-6">
             <p class="small text-right">Don't have account ?
-              <router-link to="signup">Register</router-link>
+              <router-link :to="{'name':'signup'}">Register</router-link>
             </p>
           </div>
         </div>
@@ -67,7 +69,7 @@
     },
     methods: {
       login (event) {
-        let authUser = ''
+        let authUser = '';
         axios.post(loginUrl, {
           'username': this.loginForm.username.value,
           'password': this.loginForm.password.value,

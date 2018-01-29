@@ -25,7 +25,9 @@
         <div class="row pt-3">
           <div class="col-3"></div>
           <div class="col-6">
-            <p class="small text-right">Already have account ? <a href="../login">Login</a></p>
+            <p class="small text-right">Already have account ?
+              <router-link :to="{'name':'login'}">Login</router-link>
+            </p>
           </div>
         </div>
       </form>
