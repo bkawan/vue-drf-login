@@ -40,9 +40,9 @@
 
 
 <script>
-  import axios from 'axios'
-  import {loginUrl} from '../../config/http-common'
-  import swal from 'sweetalert'
+  import axios from 'axios';
+  import {loginUrl} from '../../config/http-common';
+  import swal from 'sweetalert';
 
   export default {
     name: 'Login',
@@ -76,18 +76,18 @@
         })
           .then(response => {
             if (response.status === 200) {
-              window.localStorage.setItem('token', response.data.token)
+              window.localStorage.setItem('token', response.data.token);
             }
-            this.$router.push({name: 'profile'})
+            this.$router.push({name: 'profile'});
           }).catch(error => {
           const errors = error.response.data;
           console.log(errors);
           for (var v in errors) {
             if (v) {
               if (v == 'non_field_errors') {
-                this.non_field_errors = errors[v][0]
+                this.non_field_errors = errors[v][0];
               }
-              this.errors[v] = errors[v][0]
+              this.errors[v] = errors[v][0];
             }
           }
         });
@@ -108,6 +108,3 @@
 
   }
 </script>
-
-
-
